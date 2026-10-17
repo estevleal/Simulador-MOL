@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Químico Z: O Conceito de Mol</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #e67e22; /* Laranja DBZ adaptado para acentos visuais */
+            --border-color: #cccccc;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--container-bg);
+            border: 3px solid #000000;
+            padding: 30px;
+            box-shadow: 8px 8px 0px #000000;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px dashed #000000;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-style: italic;
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .section-title {
+            background: #000000;
+            color: #ffffff;
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .layer-box {
+            border: 2px solid #000000;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        /* ESTILO DO SIMULADOR VISUAL */
+        .simulator-card {
+            border: 3px solid #000000;
+            padding: 20px;
+            margin: 25px 0;
+            background: #ffffff;
+            box-shadow: 5px 5px 0px #000000;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        select, input {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #000000;
+            background: white;
+            font-weight: bold;
+        }
+
+        /* ÁREA VISUAL DAS CAIXAS */
+        .showcase {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .character-column {
+            flex: 1;
+            min-width: 280px;
+            border: 2px solid #000000;
+            padding: 15px;
+            text-align: center;
+            background: #fdfdfd;
+        }
+
+        .char-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .package-box {
+            width: 140px;
+            height: 140px;
+            border: 3px solid #000000;
+            margin: 0 auto 15px auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 4px;
+            padding: 8px;
+            background: #eeeeee;
+            position: relative;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .package-box::after {
+            content: "CAIXA CORPORAÇÃO CÁPSULA";
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            right: 0;
+            font-size: 9px;
+            font-weight: bold;
+            background: black;
+            color: white;
+            padding: 1px 0;
+        }
+
+        /* Ícones representativos simples P&B */
+        .item-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #000000;
+            display: inline-block;
+        }
+
+        .item-square {
+            width: 14px;
+            height: 14px;
+            background: #333333;
+            border: 1px solid #000000;
+            display: inline-block;
+        }
+
+        .ball-particle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1px solid black;
+            background: #888;
+        }
+
+        .balanca-container {
+            margin-top: 25px;
+            background: #f0f0f0;
+            border: 2px dashed #000000;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .pergunta-transicao {
+            background: #000000;
+            color: #ffffff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 0;
+        }
+
+        .pergunta-transicao h3 {
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            color: #ffcc00;
+        }
+
+        .exercicios {
+            margin-top: 30px;
+        }
+
+        .card-exercicio {
+            border-left: 4px solid #000000;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-exercicio h4 {
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Treinamento Químico Z: O Conceito de Mol</h1>
+        <p>Simulador Didático Baseado na Analogia do Estoque da Corporação Cápsula</p>
+    </header>
+
+    <div class="section-title">Camada 1: Âncora Didática (Macro/Cotidiano)</div>
+    <div class="layer-box">
+        <p>Imagine que Goku e Vegeta estão organizando o armazém da Corporação Cápsula. Goku ficou responsável por contar e embalar <strong>um cento</strong> de pregos pequenos para acabamento, enquanto Vegeta ficou encarregado de preparar <strong>um cento</strong> de grandes martelos pesados. O trabalho de ambos é idêntico na contagem: cada caixa terá rigorosamente a mesma quantidade de objetos (100 unidades em cada uma). No entanto, ao tentar levantá-las, a caixa cheia de martelos de Vegeta será infinitamente mais pesada e difícil de carregar do que a de pregos de Goku. O <strong>mol</strong> funciona exatamente como esse "cento" do estoque: ele é um pacote de contagem com um número fixo de itens, criado para garantir que uma caixa de átomos leves (pregos) e uma caixa de átomos pesados (martelos) tenham exatamente a mesma quantidade de partículas lá dentro, mesmo que pesem de forma totalmente diferente na balança do laboratório.</p>
+    </div>
+
+    <div class="section-title">Simulador Interativo do Estoque Z</div>
+    <div class="simulator-card">
+        <div class="controls">
+            <div class="control-group">
+                <label for="modo-selecao">Escolha o Modelo de Análise:</label>
+                <select id="modo-selecao" onchange="alternarModo()">
+                    <option value="estoque">Estoque Macroscópico (Pregos vs Martelos)</option>
+                    <option value="quimico">Mundo Submicroscópico (Hélio vs Ferro)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="quantidade-pacotes">Quantidade de Pacotes:</label>
+                <input type="number" id="quantidade-pacotes" value="1" min="1" max="10" style="width: 80px;" oninput="atualizarSimulador()">
+            </div>
+        </div>
+
+        <div class="showcase">
+            <!-- Coluna do Goku / Átomo Leve -->
+            <div class="character-column">
+                <div class="char-title" id="titulo-coluna-1">Goku (Pregos)</div>
+                <div class="package-box" id="caixa-1">
+                    <!-- Partículas geradas dinamicamente via JS -->
+                </div>
+                <div class="balanca-container" id="balanca-1">
+                    Contagem: 100 pregos<br>
+                    Massa Total: 50 g
+                </div>
+            </div>
+
+            <!-- Coluna do Vegeta / Átomo Pesado -->
+            <div class="character-column">
+                <div class="char-title" id="titulo-coluna-2">Vegeta (Martelos)</div>
+                <div class="package-box" id="caixa-2">
+                    <!-- Partículas geradas dinamicamente via JS -->
+                </div>
+                <div class="balanca-container" id="balanca-2">
+                    Contagem: 100 martelos<br>
+                    Massa Total: 250.000 g
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Camada 2: Densidade Científica (Submicroscópico)</div>
+    <div class="layer-box">
+        <p>Em nível submicroscópico, o <strong>mol</strong> é a unidade do Sistema Internacional (SI) para a grandeza <strong>quantidade de matéria</strong>, definida formalmente com base na fixação do valor numérico da <strong>Constante de Avogadro</strong> (6,02214076 × 10²³ mol⁻¹). Esta constante funciona como o fator de conversão absoluto e invariável, estabelecendo a relação de proporcionalidade direta entre a <strong>massa molar</strong> de uma substância (expressa em gramas por mol) e a massa de uma única <strong>entidade elementar</strong> (seja ela um átomo, molécula ou íon) expressa em unidades de massa atômica (u). Ao quantificar um mol através deste padrão numérico fixo, garante-se que a magnitude numérica macroscópica medida numa balança de precisão corresponda com exatidão matemática à proporção estequiométrica das suas interações corpusculares, permitindo a translação perfeita e reprodutível entre o domínio atômico-molecular e o domínio macroscópico.</p>
+    </div>
+
+    <div class="pergunta-transicao">
+        <h3>⚡ Pergunta de Transição</h3>
+        <p>Se o Mol funciona exatamente como o 'cento' da Corporação Cápsula e garante que 1 mol de gás Hélio (He) e 1 mol de metal Ferro (Fe) possuam rigorosamente a mesma quantidade de partículas (6,022 × 10²³), utilize os argumentos da <strong>Camada 2</strong> para explicar por que a massa do Ferro indicada na Tabela Periódica é significativamente maior que a do Hélio.</p>
+    </div>
+
+    <div class="section-title">Exercícios de Fixação Z</div>
+    <div class="exercicios">
+        <div class="card-exercicio">
+            <h4>Exercício 1 (Qualitativo) - O Treino de Gravidade de Trunks</h4>
+            <p>Trunks precisa abastecer a sala de gravidade com 2 mols de átomos de Carbono (C) e 2 mols de átomos de Enxofre (S).</p>
+            <p><strong>A)</strong> Qual das porções conterá o maior número de átomos? Justifique com base na Constante de Avogadro.<br>
+            <strong>B)</strong> Sabendo que o átomo de Enxofre possui maior massa individual que o de Carbono, qual das amostras registrará maior valor na balança?</p>
+        </div>
+        <div class="card-exercicio">
+            <h4>Exercício 2 (Quantitativo) - A Forja de Bulma</h4>
+            <p>Para reparar o radar do dragão, Bulma precisa de uma amostra que contenha exatamente 1,806 × 10²⁴ átomos de Ferro (Fe).</p>
+            <p><strong>A)</strong> Quantos mols de átomos de Ferro essa quantidade exata de partículas representa?<br>
+            <strong>B)</strong> Sabendo que a massa molar do Ferro é 56 g/mol, calcule a massa em gramas que Bulma deve pesar na balança.</p>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        Material de Transposição Didática de Química para a 2ª Série do Ensino Médio. Pronto para publicação via GitHub Pages.
+    </div>
+</div>
+
+<script>
+    function alternarModo() {
+        atualizarSimulador();
+    }
+
+    function atualizarSimulador() {
+        const modo = document.getElementById('modo-selecao').value;
+        const pacotes = parseInt(document.getElementById('quantidade-pacotes').value) || 1;
+        
+        const caixa1 = document.getElementById('caixa-1');
+        const caixa2 = document.getElementById('caixa-2');
+        const balanca1 = document.getElementById('balanca-1');
+        const balanca2 = document.getElementById('balanca-2');
+        
+        const t1 = document.getElementById('titulo-coluna-1');
+        const t2 = document.getElementById('titulo-coluna-2');
+
+        // Limpar caixas
+        caixa1.innerHTML = '';
+        caixa2.innerHTML = '';
+
+        // Renderizar mini representações visuais fixas dentro do grid do pacote
+        for(let i=0; i<20; i++) {
+            let p1 = document.createElement('div');
+            let p2 = document.createElement('div');
+            
+            if(modo === 'estoque') {
+                p1.className = 'item-dot'; // representação de prego pequeno
+                p2.className = 'item-square'; // representação de martelo quadrado
+            } else {
+                p1.className = 'ball-particle';
+                p1.style.background = '#e67e22'; // Hélio
+                p2.className = 'ball-particle';
+                p2.style.background = '#2c3e50'; // Ferro maior ou mais denso visualmente
+                p2.style.width = '14px';
+                p2.style.height = '14px';
+            }
+            caixa1.appendChild(p1);
+            caixa2.appendChild(p2);
+        }
+
+        if(modo === 'estoque') {
+            t1.innerText = "Goku (Pregos)";
+            t2.innerText = "Vegeta (Martelos)";
+            
+            let totalItens = pacotes * 100;
+            let pesoPregos = pacotes * 50;
+            let pesoMartelos = pacotes * 250000;
+
+            balanca1.innerHTML = `Pacotes (Centos): ${pacotes}<br>Contagem: ${totalItens} pregos<br>Massa Total: ${pesoPregos} g`;
+            balanca2.innerHTML = `Pacotes (Centos): ${pacotes}<br>Contagem: ${totalItens} martelos<br>Massa Total: ${pesoMartelos.toLocaleString('pt-BR')} g`;
+        } else {
+            t1.innerText = "Balão de Hélio (He)";
+            t2.innerText = "Barra de Ferro (Fe)";
+            
+            let mols = pacotes;
+            let partículasBase = (mols * 6.022).toFixed(3);
+            let pesoHe = mols * 4;
+            let pesoFe = mols * 56;
+
+            balanca1.innerHTML = `Quantidade: ${mols} mol(s)<br>Contagem: ${partículasBase} × 10²³ átomos<br>Massa Total: ${pesoHe} g`;
+            balanca2.innerHTML = `Quantidade: ${mols} mol(s)<br>Contagem: ${partículasBase} × 10²³ átomos<br>Massa Total: ${pesoFe} g`;
+        }
+    }
+
+    // Inicialização automática
+    atualizarSimulador();
+</script>
+
+</body>
+</html>
